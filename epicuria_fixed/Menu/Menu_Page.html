@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://st4.depositphotos.com/4590583/28898/i/450/depositphotos_288989496-stock-photo-banner-food-top-view-free.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            width: 100%;
+            background-color: #1b1b1b;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header .social-media,
+        header .customization {
+            position: absolute;
+            top: 10px;
+        }
+        
+        header .social-media {
+            right: 20px;
+        }
+        
+        header .customization {
+            left: 20px;
+        }
+        
+        header .social-media a,
+        header .customization a {
+            color: #C1A57B;
+            margin: 0 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: #C1A57B;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
+        
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background-color: #333333;
+            padding: 10px 0;
+        }
+        
+        nav a {
+            color: #C1A57B;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #A08C65;
+        }
+        
+        .hamburger-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .hamburger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #C1A57B;
+            border-radius: 2px;
+        }
+        
+        .mobile-nav {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: -300px;
+            /* Off-screen initially */
+            width: 250px;
+            height: 100%;
+            background-color: #1b1b1b;
+            /* Dark background */
+            display: flex;
+            flex-direction: column;
+            z-index: 999;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            /* Smooth slide animation */
+            overflow-y: auto;
+            /* Scroll if content exceeds height */
+            padding: 20px;
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+            /* Slide into view */
+        }
+        
+        .mobile-nav a {
+            color: #C1A57B;
+            /* Luxurious gold-like color */
+            margin: 15px 0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: color 0.3s, transform 0.3s;
+            display: block;
+            /* Ensures each link is on its own line */
+        }
+        
+        .mobile-nav a:hover {
+            color: #A08C65;
+            /* Slightly darker shade on hover */
+            transform: scale(1.05);
+            /* Subtle zoom effect */
+        }
+        
+        .mobile-nav .close-btn {
+            align-self: flex-end;
+            /* Align the close button to the right */
+            color: #C1A57B;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .mobile-nav .close-btn:hover {
+            transform: scale(1.2);
+            /* Zoom effect on hover */
+        }
+        
+        .section {
+            padding: 30px;
+            background-color: #c8ad7f;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 30px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            text-align: center;
+        }
+        
+        .menu-container {
+            max-height: 600px;
+            overflow-y: scroll;
+            background-color: #333333;
+        }
+        
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            overflow-y: scroll;
+            justify-content: center;
+            gap: 20px;
+            background-color: #333333;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            color: #C1A57B;
+        }
+        
+        .menu-item {
+            flex: 1 1 calc(33.333% - 40px);
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #C1A57B;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+        }
+        
+        .menu-item img {
+            width: 2in;
+            height: 3in;
+            border-radius: 10px;
+        }
+        
+        .add-to-cart {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #e5533d;
+        }
+        
+        .cart_b {
+            background-color: #333333;
+            padding: 10px;
+            border-radius: 15px;
+            border: solid #C1A57B 3px;
+        }
+        
+        .cart_b a {
+            color: #C1A57B;
+        }
+    </style>
+    <script>
+        function addToCart(itemName, itemPrice) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({
+                name: itemName,
+                price: itemPrice
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${itemName} has been added to your cart!`);
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <div class="mobile-nav" id="mobileNav">
+                <span class="close-btn" onclick="toggleMenu()">×</span>
+                <a href="../Home/4.html">Home</a>
+                <a href="../Menu/Menu_Page.html">Menu</a>
+                <a href="../Home/4.html#about">About</a>
+                <a href="../Occasions/Occasions.html">Specials</a>
+                <a href="../Registration/Registration.html">Reservation</a>
+                <a href="../Home/4.html#contact">Contact</a>
+            </div>
+        </div>
+
+
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+        </div>
+        <h1>EPICURIA</h1>
+        <p>Divine | Luxurious Taste | Cozy Atmosphere</p>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="../Home/4.html">Home</a>
+            <a href="../Menu/Menu_Page.html">Menu</a>
+            <a href="../Home/4.html#about">About</a>
+            <a href="../Occasions/Occasions.html">Specials</a>
+            <a href="../Registration/Registration.html">Reservation</a>
+            <a href="../Home/4.html#contact">Contact</a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="../Home/4.html">Home</a>
+        <a href="../Menu/Menu_Page.html">Menu</a>
+        <a href="../Home/4.html#about">About</a>
+        <a href="../Occasions/Occasions.html">Specials</a>
+        <a href="../Registration/Registration.html">Reservation</a>
+        <a href="../Home/4.html#contact">Contact</a>
+    </nav>
+    <br>
+    <div class="cart_b"><a href="cart.html"><b>Go to Cart</b></a></div>
+    <section id="menu">
+        <h2>Menu</h2>
+        <div class="menu-container">
+            <div class="menu-item">
+                <h3>Veg-Pizza Margherita</h3>
+                <img src="1.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Lasagna</h3>
+                <img src="2.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹200.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Veg-Lasagna</h3>
+                <img src="3.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹200.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Risotto alla Milanese</h3>
+                <img src="4.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Risotto alla Milanese</h3>
+                <img src="5.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Spaghetti Aglio e Olio</h3>
+                <img src="6.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Tiramisu</h3>
+                <img src="7.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Pasta Carbonara</h3>
+                <img src="8.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Veg-Arancini</h3>
+                <img src="9.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Arancini</h3>
+                <img src="10.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Caprese Salad</h3>
+                <img src="11.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Osso Buco</h3>
+                <img src="12.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Focaccia</h3>
+                <img src="13.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Kung Pao Chicken</h3>
+                <img src="14.jpg" alt="Kung Pao Chicken" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Peanuts, Soy Sauce, Chilies</p>
+                <button class="add-to-cart" onclick="addToCart('Kung Pao Chicken', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Spring Rolls</h3>
+                <img src="15.jpg" alt="Spring Rolls" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Spring Roll Wrappers, Cabbage, Carrots</p>
+                <button class="add-to-cart" onclick="addToCart('Spring Rolls', 250.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Sweet and Sour Pork</h3>
+                <img src="16.jpg" alt="Sweet and Sour Pork" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Pork, Bell Peppers, Pineapple, Vinegar</p>
+                <button class="add-to-cart" onclick="addToCart('Sweet and Sour Pork', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Mapo Tofu</h3>
+                <img src="17.jpg" alt="Mapo Tofu" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Tofu, Chili Bean Paste, Garlic, Sichuan Pepper</p>
+                <button class="add-to-cart" onclick="addToCart('Mapo Tofu', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Fried Rice</h3>
+                <img src="18.jpg" alt="Fried Rice" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Rice, Soy Sauce, Eggs, Vegetables</p>
+                <button class="add-to-cart" onclick="addToCart('Fried Rice', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Hot and Sour Soup</h3>
+                <img src="19.jpg" alt="Hot and Sour Soup" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Mushrooms, Tofu, Vinegar, Soy Sauce</p>
+                <button class="add-to-cart" onclick="addToCart('Hot and Sour Soup', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Chow Mein</h3>
+                <img src="20.jpg" alt="Chow Mein" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Noodles, Soy Sauce, Vegetables</p>
+                <button class="add-to-cart" onclick="addToCart('Chow Mein', 250.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Dim Sum</h3>
+                <img src="21.jpg" alt="Dim Sum" class="menu-image">
+                <p>₹200.00</p>
+                <p class="menu-description">Contents: Dumpling Wrappers, Meat Filling</p>
+                <button class="add-to-cart" onclick="addToCart('Dim Sum', 200.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Peking Duck</h3>
+                <img src="22.jpg" alt="Peking Duck" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Duck, Hoisin Sauce, Pancakes</p>
+                <button class="add-to-cart" onclick="addToCart('Peking Duck', 250.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Wonton Soup</h3>
+                <img src="23.jpg" alt="Wonton Soup" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Wontons, Broth, Green Onions</p>
+                <button class="add-to-cart" onclick="addToCart('Wonton Soup', 250.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Tacos</h3>
+                <img src="24.jpg" alt="Tacos" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Taco shells, Beef/Chicken, Lettuce, Cheese, Salsa</p>
+                <button class="add-to-cart" onclick="addToCart('Tacos', 350.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Burritos</h3>
+                <img src="25.jpg" alt="Burritos" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Flour tortilla, Rice, Beans, Chicken/Beef, Sour cream</p>
+                <button class="add-to-cart" onclick="addToCart('Burritos', 350.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Enchiladas</h3>
+                <img src="26.jpg" alt="Enchiladas" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Corn tortillas, Chicken, Cheese, Enchilada sauce</p>
+                <button class="add-to-cart" onclick="addToCart('Enchiladas', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Quesadillas</h3>
+                <img src="27.jpg" alt="Quesadillas" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour tortilla, Cheese, Bell peppers, Onions</p>
+                <button class="add-to-cart" onclick="addToCart('Quesadillas', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Guacamole</h3>
+                <img src="28.jpg" alt="Guacamole" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Avocados, Lime, Tomato, Cilantro, Onion</p>
+                <button class="add-to-cart" onclick="addToCart('Guacamole', 350.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Churros</h3>
+                <img src="29.jpg" alt="Churros" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Sugar, Cinnamon, Butter</p>
+                <button class="add-to-cart" onclick="addToCart('Churros', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Nachos</h3>
+                <img src="30.jpg" alt="Nachos" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Tortilla chips, Cheese, Salsa</p>
+                <button class="add-to-cart" onclick="addToCart('Nachos', 250.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Tamales</h3>
+                <img src="31.jpg" alt="Tamales" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Corn dough, Chicken/Pork, Salsa, Corn husk</p>
+                <button class="add-to-cart" onclick="addToCart('Tamales', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Mexican Street Corn</h3>
+                <img src="32.jpg" alt="Mexican Street Corn" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Corn, Chili powder, Lime, Cheese, Mayonnaise</p>
+                <button class="add-to-cart" onclick="addToCart('Mexican Street Corn', 350.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Sopapillas</h3>
+                <img src="33.jpg" alt="Sopapillas" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Baking powder, Honey, Sugar</p>
+                <button class="add-to-cart" onclick="addToCart('Sopapillas', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Croissant</h3>
+                <img src="34.jpg" alt="Croissant" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Butter, Yeast, Sugar</p>
+                <button class="add-to-cart" onclick="addToCart('Croissant', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Ratatouille</h3>
+                <img src="35.jpg" alt="Ratatouille" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Zucchini, Eggplant, Bell Peppers, Tomatoes, Garlic</p>
+                <button class="add-to-cart" onclick="addToCart('Ratatouille', 350.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Baguette</h3>
+                <img src="36.jpg" alt="Baguette" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Yeast, Water, Salt</p>
+                <button class="add-to-cart" onclick="addToCart('Baguette', 300.00)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Crepes</h3>
+                <img src="37.jpg" alt="Crepes" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Eggs, Milk, Butter</p>
+                <button class="add-to-cart" onclick="addToCart('Baguette', 300.00)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Quiche Lorraine</h3>
+                <img src="38.jpg" alt="Quiche Lorraine" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Eggs, Cream, Bacon, Pastry Dough</p>
+                <button class="add-to-cart" onclick="addToCart('Quiche Lorraine', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Bouillabaisse</h3>
+                <img src="39.jpg" alt="Bouillabaisse" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Fish, Shellfish, Fennel, Saffron</p>
+                <button class="add-to-cart" onclick="addToCart('Bouillabaisse', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Beef Bourguignon</h3>
+                <img src="40.jpg" alt="Beef Bourguignon" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Beef, Red Wine, Carrots, Mushrooms</p>
+                <button class="add-to-cart" onclick="addToCart('Beef Bourguignon', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Macarons</h3>
+                <img src="41.jpg" alt="Macarons" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Almond Flour, Egg Whites, Sugar</p>
+                <button class="add-to-cart" onclick="addToCart('Macarons', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Souffl\u00e9</h3>
+                <img src="42.jpg" alt="Souffl\u00e9" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Eggs, Sugar, Flour</p>
+                <button class="add-to-cart" onclick="addToCart('Souffl\u00e9', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Coq au Vin</h3>
+                <img src="43.jpg" alt="Coq au Vin" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chicken, Red Wine, Mushrooms, Onions</p>
+                <button class="add-to-cart" onclick="addToCart('Coq au Vin', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Dosa</h3>
+                <img src="44.jpg" alt="Dosa" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Rice, Urad Dal, Salt</p>
+                <button class="add-to-cart" onclick="addToCart('Dosa', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Idli</h3>
+                <img src="45.jpg" alt="Idli" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Rice, Urad Dal, Salt</p>
+                <button class="add-to-cart" onclick="addToCart('Idli', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Sambar</h3>
+                <img src="46.jpg" alt="Sambar" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Toor Dal, Tamarind, Vegetables, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Sambar', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Vada</h3>
+                <img src="47.jpg" alt="Vada" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Urad Dal, Spices, Salt</p>
+                <button class="add-to-cart" onclick="addToCart('Vada', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Upma</h3>
+                <img src="48.jpg" alt="Upma" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Semolina, Water, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Upma', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Pongal</h3>
+                <img src="49.jpg" alt="Pongal" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Rice, Moong Dal, Ghee, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Pongal', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Rasam</h3>
+                <img src="50.jpg" alt="Rasam" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Tamarind, Tomatoes, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Rasam', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Avial</h3>
+                <img src="51.jpg" alt="Avial" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Mixed Vegetables, Coconut, Yogurt</p>
+                <button class="add-to-cart" onclick="addToCart('Avial', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Payasam</h3>
+                <img src="52.jpg" alt="Payasam" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Rice, Milk, Sugar</p>
+                <button class="add-to-cart" onclick="addToCart('Payasam', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Chettinad Chicken</h3>
+                <img src="53.jpg" alt="Chettinad Chicken" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Chicken, Spices, Coconut</p>
+                <button class="add-to-cart" onclick="addToCart('Chettinad Chicken', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Butter Chicken</h3>
+                <img src="54.jpg" alt="Butter Chicken" class="menu-image">
+                <p>₹400.00</p>
+                <p class="menu-description">Contents: Chicken, Tomato, Butter, Cream, Ginger, Garlic</p>
+                <button class="add-to-cart" onclick="addToCart('Butter Chicken', 400.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Rogan Josh</h3>
+                <img src="55.jpg" alt="Rogan Josh" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Mutton, Onion, Tomato, Spices, Yogurt</p>
+                <button class="add-to-cart" onclick="addToCart('Rogan Josh', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Aloo Paratha</h3>
+                <img src="56.jpg" alt="Aloo Paratha" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Potatoes, Wheat flour, Cumin, Coriander</p>
+                <button class="add-to-cart" onclick="addToCart('Aloo Paratha', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Chole Bhature</h3>
+                <img src="57.jpg" alt="Chole Bhature" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Chickpeas, Flour, Onion, Tomato, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Chole Bhature', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Dal Makhani</h3>
+                <img src="58.jpg" alt="Dal Makhani" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Black lentils, Kidney beans, Butter, Cream, Garlic</p>
+                <button class="add-to-cart" onclick="addToCart('Dal Makhani', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Paneer Tikka</h3>
+                <img src="59.jpg" alt="Paneer Tikka" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Paneer, Yogurt, Spices, Ginger, Garlic</p>
+                <button class="add-to-cart" onclick="addToCart('Paneer Tikka', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Tandoori Chicken</h3>
+                <img src="60.jpg" alt="Tandoori Chicken" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Chicken, Yogurt, Ginger, Garlic, Tandoori masala</p>
+                <button class="add-to-cart" onclick="addToCart('Tandoori Chicken', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Kadhi Pakora</h3>
+                <img src="61.jpg" alt="Kadhi Pakora" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Yogurt, Gram flour, Spices, Onion</p>
+                <button class="add-to-cart" onclick="addToCart('Kadhi Pakora', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Gulab Jamun</h3>
+                <img src="62.jpg" alt="Gulab Jamun" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Milk powder, Sugar, Ghee, Cardamom</p>
+                <button class="add-to-cart" onclick="addToCart('Gulab Jamun', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Biryani</h3>
+                <img src="63.jpg" alt="Biryani" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Rice, Mutton/Chicken, Spices, Yogurt, Onion</p>
+                <button class="add-to-cart" onclick="addToCart('Biryani', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Sarson Da Saag</h3>
+                <img src="64.jpg" alt="Sarson Da Saag" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Mustard leaves, Spinach, Ginger, Garlic, Maize flour</p>
+                <button class="add-to-cart" onclick="addToCart('Sarson Da Saag', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Amritsari Kulcha</h3>
+                <img src="65.jpg" alt="Amritsari Kulcha" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Potato, Cumin, Coriander</p>
+                <button class="add-to-cart" onclick="addToCart('Amritsari Kulcha', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Tandoori Roti</h3>
+                <img src="66.jpg" alt="Tandoori Roti" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Flour, Yeast, Salt, Ghee</p>
+                <button class="add-to-cart" onclick="addToCart('Tandoori Roti', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Chana Masala</h3>
+                <img src="67.jpg" alt="Chana Masala" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chickpeas, Onion, Tomato, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Chana Masala', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Makki Di Roti</h3>
+                <img src="68.jpg" alt="Makki Di Roti" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Cornmeal, Water, Ghee</p>
+                <button class="add-to-cart" onclick="addToCart('Makki Di Roti', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Butter Chicken</h3>
+                <img src="69.jpg" alt="Butter Chicken" class="menu-image">
+                <p>₹400.00</p>
+                <p class="menu-description">Contents: Chicken, Tomato, Butter, Cream, Ginger, Garlic</p>
+                <button class="add-to-cart" onclick="addToCart('Butter Chicken', 400.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Rajma</h3>
+                <img src="70.jpg" alt="Rajma" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Kidney beans, Onion, Tomato, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Rajma', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Lassi</h3>
+                <img src="71.jpg" alt="Lassi" class="menu-image">
+                <p>₹250.00</p>
+                <p class="menu-description">Contents: Yogurt, Sugar, Cardamom</p>
+                <button class="add-to-cart" onclick="addToCart('Lassi', 250.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Kadhi Pakora</h3>
+                <img src="72.jpg" alt="Kadhi Pakora" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Yogurt, Gram flour, Spices, Onion</p>
+                <button class="add-to-cart" onclick="addToCart('Kadhi Pakora', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Rasgulla</h3>
+                <img src="73.jpg" alt="Rasgulla" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Milk powder, Sugar, Ghee, Cardamom</p>
+                <button class="add-to-cart" onclick="addToCart('Rasgulla', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Mutton Korma</h3>
+                <img src="74.jpg" alt="Mutton Korma" class="menu-image">
+                <p>₹400.00</p>
+                <p class="menu-description">Contents: Mutton, Onion, Yogurt, Ginger, Garlic, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Mutton Korma', 400.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Shahi Paneer</h3>
+                <img src="75.jpg" alt="Shahi Paneer" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Paneer, Cream, Spices, Onion, Cashews</p>
+                <button class="add-to-cart" onclick="addToCart('Shahi Paneer', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Nihari</h3>
+                <img src="76.jpg" alt="Nihari" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Beef, Onions, Ginger, Garlic, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Nihari', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Mughlai Paratha</h3>
+                <img src="77.jpg" alt="Mughlai Paratha" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Lamb, Flour, Onion, Garlic, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Mughlai Paratha', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Kebabs</h3>
+                <img src="78.jpg" alt="Kebabs" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Minced meat, Onion, Spices, Coriander</p>
+                <button class="add-to-cart" onclick="addToCart('Kebabs', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Mutton Seekh Kebab</h3>
+                <img src="79.jpg" alt="Mutton Seekh Kebab" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Mutton, Ginger, Garlic, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Mutton Seekh Kebab', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Haleem</h3>
+                <img src="80.jpg" alt="Haleem" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Lamb, Wheat, Ginger, Garlic, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Haleem', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Biryani</h3>
+                <img src="81.jpg" alt="Biryani" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Rice, Mutton/Chicken, Yogurt, Onion, Spices</p>
+                <button class="add-to-cart" onclick="addToCart('Biryani', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Sabudana Khichdi</h3>
+                <img src="82.jpg" alt="Sabudana Khichdi" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Milk powder, Sugar, Ghee, Cardamom</p>
+                <button class="add-to-cart" onclick="addToCart('Sabudana Khichdi', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Shahi Tukda</h3>
+                <img src="83.jpg" alt="Shahi Tukda" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Bread, Sugar, Milk, Ghee, Cardamom</p>
+                <button class="add-to-cart" onclick="addToCart('Shahi Tukda', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Chili Paneer</h3>
+                <img src="84.jpg" alt="Chili Paneer" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Paneer, Capsicum, Onion, Soy sauce, Chili sauce</p>
+                <button class="add-to-cart" onclick="addToCart('Chili Paneer', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Manchurian</h3>
+                <img src="85.jpg" alt="Manchurian" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Cauliflower, Soy sauce, Garlic, Chili sauce, Cornflour</p>
+                <button class="add-to-cart" onclick="addToCart('Manchurian', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Hakka Noodles</h3>
+                <img src="86.jpg" alt="Hakka Noodles" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Noodles, Carrot, Cabbage, Soy sauce, Vinegar</p>
+                <button class="add-to-cart" onclick="addToCart('Hakka Noodles', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Sweet and Sour Vegetables</h3>
+                <img src="87.jpg" alt="Sweet and Sour Vegetables" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Capsicum, Pineapple, Soy sauce, Vinegar, Sugar</p>
+                <button class="add-to-cart" onclick="addToCart('Sweet and Sour Vegetables', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Veg Fried Rice</h3>
+                <img src="88.jpg" alt="Veg Fried Rice" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Rice, Carrot, Peas, Soy sauce, Spring onions</p>
+                <button class="add-to-cart" onclick="addToCart('Veg Fried Rice', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Spring Rolls</h3>
+                <img src="89.jpg" alt="Spring Rolls" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Spring roll wrappers, Cabbage, Carrot, Soy sauce</p>
+                <button class="add-to-cart" onclick="addToCart('Spring Rolls', 300.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Chili Garlic Noodles</h3>
+                <img src="90.jpg" alt="Chili Garlic Noodles" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Noodles, Garlic, Soy sauce, Chili sauce, Spring onions</p>
+                <button class="add-to-cart" onclick="addToCart('Chili Garlic Noodles', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Schezwan Fried Rice</h3>
+                <img src="91.jpg" alt="Schezwan Fried Rice" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Rice, Schezwan sauce, Carrot, Peas, Spring onions</p>
+                <button class="add-to-cart" onclick="addToCart('Schezwan Fried Rice', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Chili Fish</h3>
+                <img src="92.jpg" alt="Chili Fish" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Fish, Soy sauce, Chili sauce, Garlic, Onion</p>
+                <button class="add-to-cart" onclick="addToCart('Chili Fish', 350.0)">Add to Cart</button>
+            </div>
+
+
+            <div class="menu-item">
+                <h3>Gobi Manchurian</h3>
+                <img src="9.jpg" alt="Gobi Manchurian" class="menu-image">
+                <p>₹350.00</p>
+                <p class="menu-description">Contents: Cauliflower, Soy sauce, Chili sauce, Garlic, Onion</p>
+                <button class="add-to-cart" onclick="addToCart('Gobi Manchurian', 350.0)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Pizza</h3>
+                <img src="https://th.bing.com/th/id/OIP.2dhr5Ln6cMHIu9SmwE_uBgHaE7?rs=1&pid=ImgDetMain" alt="Pizza" class="menu-image">
+                <p>₹800.00</p>
+                <p class="menu-description">Contents: Dough, tomato sauce, mozzarella cheese, pepperoni, olives, bell peppers.</p>
+                <button class="add-to-cart" onclick="addToCart('Pizza', 800.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Burger</h3>
+                <img src="https://www.tasteofhome.com/wp-content/uploads/2017/10/exps28800_UG143377D12_18_1b_RMS.jpg" alt="Burger" class="menu-image">
+                <p>₹400.00</p>
+                <p class="menu-description">Contents: Beef patty, lettuce, tomato, onion, pickles, cheese, burger bun.</p>
+                <button class="add-to-cart" onclick="addToCart('Burger', 400.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Pasta</h3>
+                <img src="https://th.bing.com/th/id/OIP.wSuyQCcpGi9Zo9G_IgWiRAHaGw?rs=1&pid=ImgDetMain" alt="Pasta" class="menu-image">
+                <p>₹560.00</p>
+                <p class="menu-description">Contents: Penne pasta, marinara sauce, parmesan cheese, basil, garlic.</p>
+                <button class="add-to-cart" onclick="addToCart('Pasta', 560.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Maggie</h3>
+                <img src="https://im.rediff.com/getahead/2020/sep/29burnt-garlic-chilli-maggi.jpg?w=670&h=900" alt="Maggie" class="menu-image">
+                <p>₹160.00</p>
+                <p class="menu-description">Contents: Instant noodles, vegetables, spices, soy sauce, garlic.</p>
+                <button class="add-to-cart" onclick="addToCart('Maggie', 160.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Aloo Paratha</h3>
+                <img src="https://th.bing.com/th/id/R.89edb8dc459e8736825e23eade89dc36?rik=MQ2a5EO40hZzWQ&riu=http%3a%2f%2frecipes.timesofindia.com%2fphoto%2f53109843.cms%3fimgsize%3d244340&ehk=QthpapzSSFwy3bw3A6XW%2fMWwzcNgIcgyVtT78UiHXV8%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1"
+                    alt="Aloo Paratha" class="menu-image">
+                <p>₹240.00</p>
+                <p class="menu-description">Contents: Whole wheat flour, mashed potatoes, spices, coriander, butter.</p>
+                <button class="add-to-cart" onclick="addToCart('Aloo Paratha', 240.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Chilli Potato</h3>
+                <img src="https://recipes.timesofindia.com/photo/52532656.cms" alt="Chilli Potato" class="menu-image">
+                <p>₹320.00</p>
+                <p class="menu-description">Contents: Potatoes, chili sauce, bell peppers, onions, garlic, soy sauce.</p>
+                <button class="add-to-cart" onclick="addToCart('Chilli Potato', 320.0)">Add to Cart</button>
+            </div>
+
+            <div class="menu-item">
+                <h3>Hot Chocolate</h3>
+                <img src="b.jpg" alt="Hot Chocolate" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Chocolate,Coffee,Sugar,Creamed Milk</p>
+                <button class="add-to-cart" onclick="addToCart('Hot Chocolate', 300.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Cold Brew</h3>
+                <img src="a.jpg" alt="Cold Brew" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Coffee, Ice,Sugar, Milk Cream</p>
+                <button class="add-to-cart" onclick="addToCart('Cold Brew', 300.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Americano Coffee</h3>
+                <img src="c.jpg" alt="Americano" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Coffee,Water,Creamer</p>
+                <button class="add-to-cart" onclick="addToCart('Americano Coffee', 300.0)">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <h3>Spiced Latte</h3>
+                <img src="d.jpg" alt="Latte" class="menu-image">
+                <p>₹300.00</p>
+                <p class="menu-description">Contents: Coffee,Cinnamon,Cloves,Creamer</p>
+                <button class="add-to-cart" onclick="addToCart('Spiced Latte', 300.0)">Add to Cart</button>
+            </div>
+
+
+    </section>
+    <section id="reviews " class="section">
+        <h2>Reviews</h2>
+        <p>Our customers love the food and the ambiance! Here are some of their reviews.</p>
+    </section>
+
+    <section id="contact " class="section">
+        <h2>Contact Us</h2>
+        <p>Feel free to reach out to us via email or phone for any inquiries or feedback.</p>
+    </section>
+
+    <script>
+        function toggleMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

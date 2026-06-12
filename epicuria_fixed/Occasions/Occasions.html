@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Occasions</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            color: #fff;
+            background-color: #121212;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background-color: #1b1b1b;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header .social-media,
+        header .customization {
+            position: absolute;
+            top: 10px;
+        }
+        
+        header .social-media {
+            right: 20px;
+        }
+        
+        header .customization {
+            left: 20px;
+        }
+        
+        header .social-media a,
+        header .customization a {
+            color: #C1A57B;
+            margin: 0 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: #C1A57B;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333333;
+            padding: 10px 0;
+        }
+        
+        nav a {
+            color: #C1A57B;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #A08C65;
+        }
+        
+        .hamburger-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .hamburger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #C1A57B;
+            border-radius: 2px;
+        }
+        
+        .mobile-nav {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: -300px;
+            /* Off-screen initially */
+            width: 250px;
+            height: 100%;
+            background-color: #1b1b1b;
+            /* Dark background */
+            display: flex;
+            flex-direction: column;
+            z-index: 999;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            /* Smooth slide animation */
+            overflow-y: auto;
+            /* Scroll if content exceeds height */
+            padding: 20px;
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+            /* Slide into view */
+        }
+        
+        .mobile-nav a {
+            color: #C1A57B;
+            /* Luxurious gold-like color */
+            margin: 15px 0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: color 0.3s, transform 0.3s;
+            display: block;
+            /* Ensures each link is on its own line */
+        }
+        
+        .mobile-nav a:hover {
+            color: #A08C65;
+            /* Slightly darker shade on hover */
+            transform: scale(1.05);
+            /* Subtle zoom effect */
+        }
+        
+        .mobile-nav .close-btn {
+            align-self: flex-end;
+            /* Align the close button to the right */
+            color: #C1A57B;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .mobile-nav .close-btn:hover {
+            transform: scale(1.2);
+            /* Zoom effect on hover */
+        }
+        
+        h1,
+        h2,
+        h3 {
+            font-family: 'Cursive', serif;
+        }
+        
+        section {
+            padding: 50px 20px;
+        }
+        /* Hero Section */
+        
+        .hero {
+            background-image: url('hero.jpg');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 200px 100px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+            color: #8B8000;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: #e0e0e0;
+        }
+        
+        .hero a {
+            padding: 15px 30px;
+            background-color: #C1A57B;
+            color: #121212;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 5px;
+            margin: 10px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        
+        .hero a:hover {
+            transform: scale(1.1);
+            background-color: #A08C65;
+        }
+        /* Festivals Section */
+        
+        .festivals {
+            background-color: #1b1b1b;
+        }
+        
+        .festivals h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #C1A57B;
+        }
+        
+        .festival-card {
+            background-color: #2c2c2c;
+            width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+            cursor: pointer;
+            margin: 20px;
+        }
+        
+        .festival-card img {
+            width: 100%;
+            height: auto;
+            border-bottom: 5px solid #C1A57B;
+        }
+        
+        .festival-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .festival-card h3 {
+            font-size: 1.5rem;
+            color: #C1A57B;
+        }
+        
+        .festival-card p {
+            font-size: 1rem;
+            color: #d9d9d9;
+        }
+        
+        .festival-card ul {
+            list-style: none;
+            padding: 0;
+            color: #d9d9d9;
+        }
+        
+        .festival-card ul li {
+            margin: 5px 0;
+        }
+        
+        .festival-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        /* Footer */
+        
+        footer {
+            padding: 20px;
+            background-color: #1b1b1b;
+            text-align: center;
+        }
+        
+        footer p {
+            color: #d9d9d9;
+        }
+        
+        footer a {
+            color: #C1A57B;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: #A08C65;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <div class="mobile-nav" id="mobileNav">
+                <span class="close-btn" onclick="toggleMenu()">×</span>
+                <a href="../Home/4.html">Home</a>
+                <a href="../Menu/Menu_Page.html">Menu</a>
+                <a href="../Home/4.html#about">About</a>
+                <a href="../Occasions/Occasions.html">Specials</a>
+                <a href="../Registration/Registration.html">Reservation</a>
+                <a href="../Home/4.html#contact">Contact</a>
+            </div>
+        </div>
+
+
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+        </div>
+        <h1>EPICURIA</h1>
+        <p>Divine | Luxurious Taste | Cozy Atmosphere</p>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="../Home/4.html">Home</a>
+            <a href="../Menu/Menu_Page.html">Menu</a>
+            <a href="../Home/4.html#about">About</a>
+            <a href="../Occasions/Occasions.html">Specials</a>
+            <a href="../Registration/Registration.html">Reservation</a>
+            <a href="../Home/4.html#contact">Contact</a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="../Home/4.html">Home</a>
+        <a href="../Menu/Menu_Page.html">Menu</a>
+        <a href="../Home/4.html#about">About</a>
+        <a href="../Occasions/Occasions.html">Specials</a>
+        <a href="../Registration/Registration.html">Reservation</a>
+        <a href="../Home/4.html#contact">Contact</a>
+    </nav>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Celebrate Every Occasion With Us</h1>
+        <p>Experience the richness of Indian flavors tailored for every festivity.</p>
+        <a href="#festivals">Explore Festivities</a>
+    </section>
+
+    <!-- Festivals Section -->
+    <section id="festivals" class="festivals">
+        <h2>Festive Specials</h2>
+        <div class="festival-container">
+            <!-- Add each festival -->
+            <div class="festival-card">
+                <img src="diwali1.jpg" alt="Diwali">
+                <div style="padding: 20px;">
+                    <h2>Diwali</h2>
+                    <p>
+                        <div style="text-align:center;color:#a8a8a8">
+                            <h4>Celebrate the Festival of Lights with special dishes:</h4>
+                        </div>
+                    </p>
+                    <ul>
+                        <li><b>Starters: </b>Paneer tikka,Tandoori mushrooms,samosas</li>
+                        <li><b>Mains: </b>Dal makhani,Shahi paneer,Butter chicken,Hyderabadi biryani</li>
+                        <li><b>Desserts: </b>Gulab jamun,Kaju katli,Rasmalai</li>
+                        <li><b>Drinks: </b>Masala chae,Cold coffee</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="festival-card">
+                <img src="holi1.jpg" alt="Holi">
+                <div style="padding: 20px;">
+                    <h2>Holi</h2>
+                    <p>
+                        <div style="text-align:center;color:#A8A8A8">
+                            <h4>Celebrate the festival of colors with a rainbow of flavours!</h4>
+                        </div>
+                    </p>
+                    <ul>
+                        <li><b>Starters:</b>Colourful chat platters,Veg seekh kabab,Colourful chikken tikka</li>
+                        <li><b>Mains: </b>Kachori,Veg korma,Rogan josh</li>
+                        <li><b>Desserts: </b>Gujiya,Thandai with bhang,Malpua</li>
+                        <li><b>Drinks: </b>Thandai,Lassi,Kesar milk</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="festival-card">
+                <img src="eid.jpg" alt="Eid">
+                <div style="padding: 20px;">
+                    <h2>Eid</h2>
+                    <p>
+                        <div style="text-align:center;color:#a8a8a8">
+                            <h4>Celebrate Eid with rich delicacies:
+                                <h4>
+                        </div>
+                    </p>
+                    <ul>
+                        <li><b>Starters: </b>Chicken seekh kabab,Shammi kababs</li>
+                        <li><b>Mains: </b>Mutton biryani,Chicken korma,nihari</li>
+                        <li><b>Desserts: </b>Sheer khurma,Phirni,Seviyan kheer</li>
+                        <li><b>Drinks: </b>Roohafza sherbat,Cold coffee</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="festival-card">
+                <img src="navratri2.jpg" alt="Navratri">
+                <div style="padding: 20px;">
+                    <h2>Navratri</h2>
+                    <p>
+                        <div style="text-align:center;color:#A8A8A8">
+                            <h4>Pure and Satvik,just for you-Our Navratri Fasting Food Options:</h4>
+                        </div>
+                    </p>
+                    <ul>
+                        <li><b>Starters: </b>Sabudana Vada,Fruit chaat</li>
+                        <li><b>Mains: </b>Kuttu ki puri,Vrat ke aloo,Sama ka chawal</li>
+                        <li><b>Dessert: </b>Makhana kheer,Coconut ladoo,Kaju ki barfi</li>
+                        <li><b>Drinks</b>Coconut water,Mango lassi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="festival-card">
+                <img src="independence day3.jpg" alt="Independence day">
+                <div style="padding: 20px;">
+                    <h2>Independece day</h2>
+                    <p>
+                        <div style="text-align:center;color:#A8A8A8">
+                            <h4>Celebrate freedom with every bite!</h4>
+                        </div>
+                    </p>
+                    <ul>
+                        <li><b>Starters: </b>Tricolor dhokla,Vegetable kababs</li>
+                        <li><b>Mains: </b>Tringa pulao,Paneer tikka masal,Butter naan</li>
+                        <li><b>Dessert: </b>Tricolor barfi,Kesari rasgulla</li>
+                        <li><b>Drinks: </b>Tiranga lassi,Indian flag punch</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Repeat similar cards for other festivals -->
+            <!-- Add Lohri, Raksha Bandhan, Onam, Pongal, Ganesh Chaturthi, Christmas, Karwa Chauth, Janmashtami, etc. -->
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Indian Restaurant. All Rights Reserved.</p>
+        <p>Follow us on
+            <a href="#">Facebook</a>,
+            <a href="#">Instagram</a>, and
+            <a href="#">Twitter</a>.
+        </p>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

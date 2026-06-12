@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/png" sizes="16x16" href="../Home/fevi.png">
+    <title>Food Filter Taste Board</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: #fff;
+        }
+        
+        h3 {
+            color: #C1A57B;
+        }
+        
+        header {
+            background-color: #1b1b1b;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header .social-media,
+        header .customization {
+            position: absolute;
+            top: 10px;
+        }
+        
+        header .social-media {
+            right: 20px;
+        }
+        
+        header .customization {
+            left: 20px;
+        }
+        
+        header .social-media a,
+        header .customization a {
+            color: #C1A57B;
+            margin: 0 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: #C1A57B;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333333;
+            padding: 10px 0;
+        }
+        
+        nav a {
+            color: #C1A57B;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #A08C65;
+        }
+        
+        .hamburger-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .hamburger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #C1A57B;
+            border-radius: 2px;
+        }
+        
+        .mobile-nav {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: -300px;
+            /* Off-screen initially */
+            width: 250px;
+            height: 100%;
+            background-color: #1b1b1b;
+            /* Dark background */
+            display: flex;
+            flex-direction: column;
+            z-index: 999;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            /* Smooth slide animation */
+            overflow-y: auto;
+            /* Scroll if content exceeds height */
+            padding: 20px;
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+            /* Slide into view */
+        }
+        
+        .mobile-nav a {
+            color: #C1A57B;
+            /* Luxurious gold-like color */
+            margin: 15px 0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: color 0.3s, transform 0.3s;
+            display: block;
+            /* Ensures each link is on its own line */
+        }
+        
+        .mobile-nav a:hover {
+            color: #A08C65;
+            /* Slightly darker shade on hover */
+            transform: scale(1.05);
+            /* Subtle zoom effect */
+        }
+        
+        .mobile-nav .close-btn {
+            align-self: flex-end;
+            /* Align the close button to the right */
+            color: #C1A57B;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .mobile-nav .close-btn:hover {
+            transform: scale(1.2);
+            /* Zoom effect on hover */
+        }
+        
+        h2 {
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            font-Family: 'Georgia', serif;
+            color: #d2a679;
+        }
+        
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+        }
+        
+        .filter-group {
+            margin: 10px;
+        }
+        
+        .filter-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .filter-title span {
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .filter-options {
+            display: none;
+            margin-top: 10px;
+        }
+        
+        .filter-tile {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #444;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .filter-tile:hover {
+            background-color: #666;
+        }
+        
+        .filter-tile.selected {
+            background-color: #d2a679;
+            color: #000;
+        }
+        
+        #results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .food-item {
+            width: 200px;
+            height: 300px;
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #444;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        
+        .food-item img {
+            width: 90%;
+            height: 80%;
+            border-radius: 5px;
+        }
+        
+        .food-item:hover {
+            transform: scale(1.05);
+            background-color: #666;
+        }
+        
+        #customization {
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        
+        button {
+            background-color: #d2a679;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        button:hover {
+            background-color: #b58c5b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <div class="mobile-nav" id="mobileNav">
+                <span class="close-btn" onclick="toggleMenu()">×</span>
+                <a href="file:///C:/Users/HP/Desktop/PROJECT/Home/4.html">Home</a>
+                <a href="file:///C:/Users/HP/Desktop/PROJECT/Menu/Menu_Page.html">Menu</a>
+                <a href="../Home/4.html#about">About</a>
+                <a href="file:///C:/Users/HP/Desktop/PROJECT/Occasions/Occasions.html">Specials</a>
+                <a href="file:///C:/Users/HP/Desktop/PROJECT/Registration/Registration.html">Reservation</a>
+                <a href="../Home/4.html#contact">Contact</a>
+            </div>
+        </div>
+
+
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+        </div>
+        <h1>EPICURIA</h1>
+        <p>Divine | Luxurious Taste | Cozy Atmosphere</p>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="file:///C:/Users/HP/Desktop/PROJECT/Home/4.html">Home</a>
+            <a href="file:///C:/Users/HP/Desktop/PROJECT/Menu/Menu_Page.html">Menu</a>
+            <a href="../Home/4.html#about">About</a>
+            <a href="file:///C:/Users/HP/Desktop/PROJECT/Occasions/Occasions.html">Specials</a>
+            <a href="file:///C:/Users/HP/Desktop/PROJECT/Registration/Registration.html">Reservation</a>
+            <a href="../Home/4.html#contact">Contact</a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="file:///C:/Users/HP/Desktop/PROJECT/Home/4.html">Home</a>
+        <a href="file:///C:/Users/HP/Desktop/PROJECT/Menu/Menu_Page.html">Menu</a>
+        <a href="../Home/4.html#about">About</a>
+        <a href="file:///C:/Users/HP/Desktop/PROJECT/Occasions/Occasions.html">Specials</a>
+        <a href="file:///C:/Users/HP/Desktop/PROJECT/Registration/Registration.html">Reservation</a>
+        <a href="../Home/4.html#contact">Contact</a>
+    </nav>
+
+    <h2>Taste Board</h2>
+    <div id="filters"></div>
+    <h3 style="text-align: center;">Filtered Food Items</h3>
+    <div id="results"></div>
+    <h2 style="text-align: center;">Customization</h2>
+    <div id="customization"></div>
+
+    <script>
+        const data = [ //Italian
+            {
+                name: "Veg-Pizza Margherita",
+                image: "1.jpg",
+                categories: {
+                    DineType: ["Street Dine", "Gourmet Dine"],
+                    variety: "Veg",
+                    taste: ["Savory", "Tangy", "Creamy"],
+                    meal: ["Main Course", "Brunch", "Dinner"],
+                    cuisine: "Italian",
+                    type: ["Comfort Food", "Everyday Meal"]
+                },
+                ingredients: {
+                    mandatory: ["Tomato sauce", "fresh mozzarella", "basil", "olive oil"],
+                    negotiable: ["Thick Crust", "Thin Crust", "Mushrooms", "Anchovies"]
+                }
+            }, {
+                name: "Lasagna",
+                image: "2.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Fine Dine"],
+                    variety: "Non-Veg",
+                    taste: ["Cheesy", "Savory", "Tangy"],
+                    meal: ["Main Course", "Dinner"],
+                    cuisine: "Italian",
+                    type: ["Comfort Food", "Family Meal"]
+                },
+                ingredients: {
+                    mandatory: ["Pasta sheets", "meat sauce", "béchamel sauce", "Parmesan cheese"],
+                    negotiable: ["ricotta cheese", "mozzarella cheese", "ground beef", "pork", "chicken"]
+                }
+            }, {
+                name: "Veg-Lasagna",
+                image: "3.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Fine Dine"],
+                    variety: "Veg",
+                    taste: ["Cheesy", "Savory", "Tangy"],
+                    meal: ["Main Course", "Dinner"],
+                    cuisine: "Italian",
+                    type: ["Comfort Food", "Family Meal"]
+                },
+                ingredients: {
+                    mandatory: ["Pasta sheets", "vegitable sauce", "béchamel sauce", "Parmesan cheese"],
+                    negotiable: ["ricotta cheese", "mozzarella cheese", "tomato", "olives"]
+                }
+            }, {
+                name: "Risotto alla Milanese",
+                image: "4.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Fine Dine"],
+                    variety: "Vegan",
+                    taste: ["Creamy", "Savory", "Earthy"],
+                    meal: ["Breakfast", "Brunch"],
+                    cuisine: "Italian",
+                    type: ["Festival Special", "Comfort Food"]
+                },
+                ingredients: {
+                    mandatory: ["Arborio rice", "saffron", "Parmesan cheese", "Vegitable broth"],
+                    negotiable: ["Garlic", "Onion"]
+                }
+            }, {
+                name: "Risotto alla Milanese",
+                image: "5.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Fine Dine"],
+                    variety: "Non-Veg",
+                    taste: ["Creamy", "Savory", "Earthy"],
+                    meal: ["Breakfast", "Brunch"],
+                    cuisine: "Italian",
+                    type: ["Festival Special", "Comfort Food"]
+                },
+                ingredients: {
+                    mandatory: ["Arborio rice", "saffron", "Parmesan cheese", "Meat broth"],
+                    negotiable: ["Garlic", "Onion"]
+                }
+            }, {
+                name: "Spaghetti Aglio e Olio",
+                image: "6.jpg",
+                categories: {
+                    DineType: ["Street Dine", "Gourmet Dine"],
+                    variety: "Vegan",
+                    taste: ["Spicy", "Savory"],
+                    meal: ["Main Course", "Dinner", "Brunch"],
+                    cuisine: "Italian",
+                    type: ["Comfort Food"]
+                },
+                ingredients: {
+                    mandatory: ["Spaghetti", "garlic", "olive oil", "red pepper flakes"],
+                    negotiable: ["Parsley", "shrimp", "anchovies"]
+                }
+            }, {
+                name: "Tiramisu",
+                image: "7.jpg",
+                categories: {
+                    DineType: "Fine Dine",
+                    variety: "Veg",
+                    taste: ["Sweet", "Creamy", "Coffee-Flavored"],
+                    meal: ["Main Course", "Brunch"],
+                    cuisine: "Italian",
+                    type: ["Dessert", "Comfort Food"]
+                },
+                ingredients: {
+                    mandatory: ["Mascarpone cheese", "ladyfingers", "coffee", "cocoa powder", "eggs"],
+                    negotiable: ["Rum", "Marsala wine", "None"]
+                }
+            }, {
+                name: "Pasta Carbonara",
+                image: "8.jpg",
+                categories: {
+                    DineType: ["Street Dine"],
+                    variety: "Non-Veg",
+                    taste: ["Savory", "Smoky", "Creamy"],
+                    meal: ["Main Course", "Brunch"],
+                    cuisine: "Italian",
+                    type: "Comfort Food"
+                },
+                ingredients: {
+                    mandatory: ["Pasta (spaghetti)", "Eggs", "Pecorino Romano cheese", "black pepper"],
+                    negotiable: ["Pancetta", "Cilantro", "Guanciale", "Fettuccine", "Rigatoni", "Parmesan"]
+                }
+            }, {
+                name: "Veg-Arancini",
+                image: "9.jpg",
+                categories: {
+                    DineType: ["Street Dine", "Gourmet Dine"],
+                    variety: "Veg",
+                    taste: ["Crispy", "Cheesy", "Savory", "Sweet"],
+                    meal: ["Breakfast", "Brunch"],
+                    cuisine: "Italian",
+                    type: ["Comfort Food", "Snack"]
+                },
+                ingredients: {
+                    mandatory: ["Arborio rice", "breadcrumbs", "mozzarella"],
+                    negotiable: ["cheese", "peas", "mushrooms", "saffron"]
+                }
+            }, {
+                name: "Arancini",
+                image: "10.jpg",
+                categories: {
+                    DineType: ["Street Dine", "Gourmet Dine"],
+                    variety: "Non-Veg",
+                    taste: ["Crispy", "Cheesy", "Savory", "Sweet"],
+                    meal: ["Breakfast", "Brunch"],
+                    cuisine: "Italian",
+                    type: ["Comfort Food", "Snack"]
+                },
+                ingredients: {
+                    mandatory: ["Arborio rice", "breadcrumbs", "mozzarella"],
+                    negotiable: ["cheese", "meat", "seafood", "saffron"]
+                }
+            }, {
+                name: "Caprese Salad",
+                image: "11.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Fine Dine"],
+                    variety: "Veg",
+                    taste: ["Tangy", "Creamy"],
+                    meal: ["Breakfast", "Dinner"],
+                    cuisine: "Italian",
+                    type: "Comfort Food"
+                },
+                ingredients: {
+                    mandatory: ["Fresh tomatoes", "mozzarella di bufala", "basil", "olive oil", "salt"],
+                    negotiable: ["Balsamic vinegar", "Oregano", "Garlic"]
+                }
+            }, {
+                name: "Osso Buco",
+                image: "12.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Fine Dine"],
+                    variety: "Non-Veg",
+                    taste: ["Savory", "Sweet"],
+                    meal: "Dinner",
+                    cuisine: "Italian",
+                    type: ["Festival Special", "Comfort Food"]
+                },
+                ingredients: {
+                    mandatory: ["Veal shanks", "white wine", "broth", "gremolata"],
+                    negotiable: ["thyme", "rosemary", "celery", "onion"]
+                }
+            }, {
+                name: "Focaccia",
+                image: "13.jpg",
+                categories: {
+                    DineType: ["Gourmet Dine", "Street Dine"],
+                    variety: "Vegan",
+                    taste: ["Savory", "Salty"],
+                    meal: ["Breakfast", "Main Course"],
+                    cuisine: "Italian",
+                    type: ["Festival Special", "Snack"]
+                },
+                ingredients: {
+                    mandatory: ["Flour", "yeast", "salt", "olive oil"],
+                    negotiable: ["Rosemary", "garlic", "olives", "tomatoes"]
+                }
+            },
+            //Chinese
+            {
+                "name": "Kung Pao Chicken",
+                "image": "14.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine", "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Spicy",
+                        "Tangy",
+                        "Savory"
+                    ],
+                    "meal": "Dinner",
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Comfort Food",
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Chicken",
+                        "Peanuts",
+                        "Soy Sauce",
+                        "Chilies"
+                    ],
+                    "negotiable": [
+                        "Bell Peppers",
+                        "Garlic",
+                        "Ginger"
+                    ]
+                }
+            }, {
+                "name": "Spring Rolls",
+                "image": "15.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine",
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Crispy",
+                        "Savory"
+                    ],
+                    "meal": "Snack",
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Snack",
+                        "Appetizer"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Spring Roll Wrappers",
+                        "Cabbage",
+                        "Carrots"
+                    ],
+                    "negotiable": [
+                        "Soy Sauce",
+                        "Bean Sprouts",
+                        "Noodles"
+                    ]
+                }
+            }, {
+                "name": "Sweet and Sour Pork",
+                "image": "16.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine",
+                        "Fine Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Sweet",
+                        "Tangy",
+                        "Savory",
+                        "Sour"
+                    ],
+                    "meal": "Main Course",
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Comfort Food",
+                        "Family Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Pork",
+                        "Bell Peppers",
+                        "Pineapple",
+                        "Vinegar"
+                    ],
+                    "negotiable": [
+                        "Soy Sauce",
+                        "Tomato Sauce",
+                        "Onions"
+                    ]
+                }
+            }, {
+                "name": "Mapo Tofu",
+                "image": "17.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine",
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Spicy",
+                        "Savory"
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Comfort Food",
+
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Tofu",
+                        "Chili Bean Paste",
+                        "Garlic",
+                        "Sichuan Pepper"
+                    ],
+                    "negotiable": [
+                        "Green Onions",
+                        "Ground Pork"
+                    ]
+                }
+            }, {
+                "name": "Fried Rice",
+                "image": "18.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine",
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+                        "Smoky"
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Everyday Meal",
+                        "Comfort Food"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Rice",
+                        "Soy Sauce",
+                        "Eggs",
+                        "Vegetables"
+                    ],
+                    "negotiable": [
+                        "Chicken",
+                        "Shrimp",
+                        "Pork"
+                    ]
+                }
+            }, {
+                "name": "Hot and Sour Soup",
+                "image": "19.jpg",
+                "categories": {
+                    "DineType": [
+                        "Fine Dine",
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Spicy",
+                        "Tangy"
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Starter",
+
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Mushrooms",
+                        "Tofu",
+                        "Vinegar",
+                        "Soy Sauce"
+                    ],
+                    "negotiable": [
+                        "Eggs",
+                        "Chicken",
+                        "Bamboo Shoots"
+                    ]
+                }
+            }, {
+                "name": "Chow Mein",
+                "image": "20.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine",
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+                        "Smoky"
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Comfort Food",
+                        "Snack"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Noodles",
+                        "Soy Sauce",
+                        "Vegetables"
+                    ],
+                    "negotiable": [
+                        "Chicken",
+                        "Shrimp",
+                        "Pork"
+                    ]
+                }
+            }, {
+                "name": "Dim Sum",
+                "image": "21.jpg",
+                "categories": {
+                    "DineType": [
+                        "Fine Dine",
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Snack",
+                        "Appetizer"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Dumpling Wrappers",
+                        "Meat Filling"
+                    ],
+                    "negotiable": [
+                        "Shrimp",
+                        "Vegetables",
+                        "Soy Sauce"
+                    ]
+                }
+            }, {
+                "name": "Peking Duck",
+                "image": "22.jpg",
+                "categories": {
+                    "DineType": [
+                        "Fine Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+                        "Sweet"
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Festival Special",
+                        "Family Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Duck",
+                        "Hoisin Sauce",
+                        "Pancakes"
+                    ],
+                    "negotiable": [
+                        "Green Onions",
+                        "Cucumber"
+                    ]
+                }
+            }, {
+                "name": "Wonton Soup",
+                "image": "23.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine",
+                        "Street Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+
+                    ],
+                    "cuisine": "Chinese",
+                    "type": [
+                        "Starter",
+                        "Comfort Food"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Wontons",
+                        "Broth",
+                        "Green Onions"
+                    ],
+                    "negotiable": [
+                        "Shrimp",
+                        "Chicken",
+                        "Pork"
+                    ]
+                }
+            },
+            // mexican
+            {
+                "name": "Tacos",
+                "image": "24.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "meal": ["Snack"],
+                    "cuisine": "Mexican",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Taco shells", "Beef/Chicken", "Lettuce", "Cheese", "Salsa"],
+                    "negotiable": ["Guacamole", "Cilantro"]
+                }
+            }, {
+                "name": "Burritos",
+                "image": "25.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mexican",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Flour tortilla", "Rice", "Beans", "Chicken/Beef", "Sour cream"],
+                    "negotiable": ["Cheese", "Lettuce", "Salsa"]
+                }
+            }, {
+                "name": "Enchiladas",
+                "image": "26.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mexican",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Corn tortillas", "Chicken", "Cheese", "Enchilada sauce"],
+                    "negotiable": ["Cilantro", "Sour cream"]
+                }
+            }, {
+                "name": "Quesadillas",
+                "image": "27.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Cheesy"],
+                    "cuisine": "Mexican",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Flour tortilla", "Cheese", "Bell peppers", "Onions"],
+                    "negotiable": ["Salsa", "Guacamole"]
+                }
+            }, {
+                "name": "Guacamole",
+                "image": "28.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory"],
+                    "cuisine": "Mexican",
+                    "type": ["Side Dish", "Appetizer"]
+                },
+                "ingredients": {
+                    "mandatory": ["Avocados", "Lime", "Tomato", "Cilantro", "Onion"],
+                    "negotiable": ["Chili", "Garlic"]
+                }
+            }, {
+                "name": "Churros",
+                "image": "29.jpg",
+                "categories": {
+                    "DineType": ["Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet"],
+                    "cuisine": "Mexican",
+                    "type": ["Dessert", "Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Flour", "Sugar", "Cinnamon", "Butter"],
+                    "negotiable": ["Chocolate syrup"]
+                }
+            }, {
+                "name": "Nachos",
+                "image": "30.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Cheesy"],
+                    "cuisine": "Mexican",
+                    "type": ["Appetizer"]
+                },
+                "ingredients": {
+                    "mandatory": ["Tortilla chips", "Cheese", "Salsa"],
+                    "negotiable": ["Guacamole", "Sour cream"]
+                }
+            }, {
+                "name": "Tamales",
+                "image": "31.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mexican",
+                    "type": ["Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Corn dough", "Chicken/Pork", "Salsa", "Corn husk"],
+                    "negotiable": ["Cheese", "Lettuce"]
+                }
+            }, {
+                "name": "Mexican Street Corn",
+                "image": "32.jpg",
+                "categories": {
+                    "DineType": ["Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mexican",
+                    "type": ["Side Dish"]
+                },
+                "ingredients": {
+                    "mandatory": ["Corn", "Chili powder", "Lime", "Cheese", "Mayonnaise"],
+                    "negotiable": ["Cilantro"]
+                }
+            }, {
+                "name": "Sopapillas",
+                "image": "33.jpg",
+                "categories": {
+                    "DineType": ["Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet"],
+                    "cuisine": "Mexican",
+                    "type": ["Dessert", "Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Flour", "Baking powder", "Honey", "Sugar"],
+                    "negotiable": ["Cinnamon"]
+                }
+            },
+            // french
+            {
+                "name": "Croissant",
+                "image": "34.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+
+                        "Cheesy"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Breakfast"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Flour",
+                        "Butter",
+                        "Yeast",
+                        "Sugar"
+                    ],
+                    "negotiable": [
+                        "Almonds",
+                        "Chocolate"
+                    ]
+                }
+            }, {
+                "name": "Ratatouille",
+                "image": "35.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Zucchini",
+                        "Eggplant",
+                        "Bell Peppers",
+                        "Tomatoes",
+                        "Garlic"
+                    ],
+                    "negotiable": [
+                        "Basil",
+                        "Thyme"
+                    ]
+                }
+            }, {
+                "name": "Baguette",
+                "image": "36.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Snack"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Flour",
+                        "Yeast",
+                        "Water",
+                        "Salt"
+                    ],
+                    "negotiable": [
+                        "Butter",
+                        "Cheese"
+                    ]
+                }
+            }, {
+                "name": "Cr\u00eapes",
+                "image": "37.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Sweet",
+                        "Savory"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Snack"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Flour",
+                        "Eggs",
+                        "Milk",
+                        "Butter"
+                    ],
+                    "negotiable": [
+                        "Nutella",
+                        "Jam",
+                        "Ham",
+                        "Cheese"
+                    ]
+                }
+            }, {
+                "name": "Quiche Lorraine",
+                "image": "38.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Eggs",
+                        "Cream",
+                        "Bacon",
+                        "Pastry Dough"
+                    ],
+                    "negotiable": [
+                        "Cheese",
+                        "Spinach"
+                    ]
+                }
+            }, {
+                "name": "Bouillabaisse",
+                "image": "39.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Soup"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Fish",
+                        "Shellfish",
+                        "Fennel",
+                        "Saffron"
+                    ],
+                    "negotiable": [
+                        "Garlic",
+                        "Tomatoes",
+                        "Herbs"
+                    ]
+                }
+            }, {
+                "name": "Beef Bourguignon",
+                "image": "40.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Beef",
+                        "Red Wine",
+                        "Carrots",
+                        "Mushrooms"
+                    ],
+                    "negotiable": [
+                        "Pearl Onions",
+                        "Garlic"
+                    ]
+                }
+            }, {
+                "name": "Macarons",
+                "image": "41.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Sweet"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Dessert"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Almond Flour",
+                        "Egg Whites",
+                        "Sugar"
+                    ],
+                    "negotiable": [
+                        "Food Coloring",
+                        "Fillings"
+                    ]
+                }
+            }, {
+                "name": "Souffl\u00e9",
+                "image": "42.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Sweet",
+                        "Savory"
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Dessert"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Eggs",
+                        "Sugar",
+                        "Flour"
+                    ],
+                    "negotiable": [
+                        "Chocolate",
+                        "Cheese"
+                    ]
+                }
+            }, {
+                "name": "Coq au Vin",
+                "image": "43.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Savory",
+
+                    ],
+                    "cuisine": "French",
+                    "type": [
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Chicken",
+                        "Red Wine",
+                        "Mushrooms",
+                        "Onions"
+                    ],
+                    "negotiable": [
+                        "Garlic",
+                        "Herbs"
+                    ]
+                }
+            },
+            //si
+            {
+                "name": "Dosa",
+                "image": "44.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Breakfast"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Rice",
+                        "Urad Dal",
+                        "Salt"
+                    ],
+                    "negotiable": [
+                        "Ghee",
+                        "Masala Filling"
+                    ]
+                }
+            }, {
+                "name": "Idli",
+                "image": "45.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Breakfast"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Rice",
+                        "Urad Dal",
+                        "Salt"
+                    ],
+                    "negotiable": [
+                        "Coconut Chutney",
+                        "Sambar"
+                    ]
+                }
+            }, {
+                "name": "Sambar",
+                "image": "46.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Savory",
+                        "Spicy"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Toor Dal",
+                        "Tamarind",
+                        "Vegetables",
+                        "Spices"
+                    ],
+                    "negotiable": [
+                        "Coriander",
+                        "Curry Leaves"
+                    ]
+                }
+            }, {
+                "name": "Vada",
+                "image": "47.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Snack"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Urad Dal",
+                        "Spices",
+                        "Salt"
+                    ],
+                    "negotiable": [
+                        "Coconut Chutney",
+                        "Sambar"
+                    ]
+                }
+            }, {
+                "name": "Upma",
+                "image": "48.jpg",
+                "categories": {
+                    "DineType": [
+                        "Street Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Breakfast"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Semolina",
+                        "Water",
+                        "Spices"
+                    ],
+                    "negotiable": [
+                        "Vegetables",
+                        "Cashews"
+                    ]
+                }
+            }, {
+                "name": "Pongal",
+                "image": "49.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Breakfast"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Rice",
+                        "Moong Dal",
+                        "Ghee",
+                        "Spices"
+                    ],
+                    "negotiable": [
+                        "Cashews",
+                        "Black Pepper"
+                    ]
+                }
+            }, {
+                "name": "Rasam",
+                "image": "50.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Vegan",
+                    "taste": [
+                        "Spicy",
+                        "Tangy"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Soup"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Tamarind",
+                        "Tomatoes",
+                        "Spices"
+                    ],
+                    "negotiable": [
+                        "Coriander",
+                        "Curry Leaves"
+                    ]
+                }
+            }, {
+                "name": "Avial",
+                "image": "51.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Savory"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Side Dish"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Mixed Vegetables",
+                        "Coconut",
+                        "Yogurt"
+                    ],
+                    "negotiable": [
+                        "Curry Leaves"
+                    ]
+                }
+            }, {
+                "name": "Payasam",
+                "image": "52.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Veg",
+                    "taste": [
+                        "Sweet"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Dessert"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Rice",
+                        "Milk",
+                        "Sugar"
+                    ],
+                    "negotiable": [
+                        "Cashews",
+                        "Raisins",
+                        "Cardamom"
+                    ]
+                }
+            }, {
+                "name": "Chettinad Chicken",
+                "image": "53.jpg",
+                "categories": {
+                    "DineType": [
+                        "Gourmet Dine"
+                    ],
+                    "variety": "Non-Veg",
+                    "taste": [
+                        "Spicy"
+                    ],
+                    "cuisine": "South Indian",
+                    "type": [
+                        "Everyday Meal"
+                    ]
+                },
+                "ingredients": {
+                    "mandatory": [
+                        "Chicken",
+                        "Spices",
+                        "Coconut"
+                    ],
+                    "negotiable": [
+                        "Curry Leaves",
+                        "Coriander"
+                    ]
+                }
+            },
+            //ni
+            {
+                "name": "Butter Chicken",
+                "image": "54.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal", "Festive"]
+                },
+                "ingredients": {
+                    "mandatory": ["Chicken", "Tomato", "Butter", "Cream", "Ginger", "Garlic"],
+                    "negotiable": ["Coriander", "Green chili", "Kasuri methi"]
+                }
+            }, {
+                "name": "Rogan Josh",
+                "image": "55.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Mutton", "Onion", "Tomato", "Spices", "Yogurt"],
+                    "negotiable": ["Garlic", "Ginger", "Cilantro"]
+                }
+            }, {
+                "name": "Aloo Paratha",
+                "image": "56.jpg",
+                "categories": {
+                    "DineType": ["Home Style", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory"],
+                    "meal": "Breakfast",
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Potatoes", "Wheat flour", "Cumin", "Coriander"],
+                    "negotiable": ["Butter", "Yogurt"]
+                }
+            }, {
+                "name": "Chole Bhature",
+                "image": "57.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Home Style"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal", "Festive"]
+                },
+                "ingredients": {
+                    "mandatory": ["Chickpeas", "Flour", "Onion", "Tomato", "Spices"],
+                    "negotiable": ["Cilantro", "Green chili", "Ginger"]
+                }
+            }, {
+                "name": "Dal Makhani",
+                "image": "58.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Home Style"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Black lentils", "Kidney beans", "Butter", "Cream", "Garlic"],
+                    "negotiable": ["Cilantro", "Ginger"]
+                }
+            }, {
+                "name": "Paneer Tikka",
+                "image": "59.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Starter", "Snack"]
+                },
+                "ingredients": {
+                    "mandatory": ["Paneer", "Yogurt", "Spices", "Ginger", "Garlic"],
+                    "negotiable": ["Cilantro", "Lemon"]
+                }
+            }, {
+                "name": "Tandoori Chicken",
+                "image": "60.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Chicken", "Yogurt", "Ginger", "Garlic", "Tandoori masala"],
+                    "negotiable": ["Lemon", "Coriander"]
+                }
+            }, {
+                "name": "Kadhi Pakora",
+                "image": "61.jpg",
+                "categories": {
+                    "DineType": ["Home Style"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Yogurt", "Gram flour", "Spices", "Onion"],
+                    "negotiable": ["Cilantro", "Chili powder"]
+                }
+            }, {
+                "name": "Gulab Jamun",
+                "image": "62.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Gourmet Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet"],
+                    "cuisine": "North Indian",
+                    "type": ["Dessert"]
+                },
+                "ingredients": {
+                    "mandatory": ["Milk powder", "Sugar", "Ghee", "Cardamom"],
+                    "negotiable": ["Rose water"]
+                }
+            }, {
+                "name": "Biryani",
+                "image": "63.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "North Indian",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Rice", "Mutton/Chicken", "Spices", "Yogurt", "Onion"],
+                    "negotiable": ["Cilantro", "Saffron"]
+                }
+            },
+            //punjabi
+            {
+                "name": "Sarson Da Saag",
+                "image": "64.jpg",
+                "categories": {
+                    "DineType": ["Home Style", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Punjabi",
+                    "type": ["Comfort Food", "Winter Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Mustard leaves", "Spinach", "Ginger", "Garlic", "Maize flour"],
+                    "negotiable": ["Butter", "Cilantro", "Green chili"]
+                }
+            }, {
+                "name": "Amritsari Kulcha",
+                "image": "65.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Home Style"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Punjabi",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Flour", "Potato", "Cumin", "Coriander"],
+                    "negotiable": ["Butter", "Cilantro"]
+                }
+            }, {
+                "name": "Tandoori Roti",
+                "image": "66.jpg",
+                "categories": {
+                    "DineType": ["Home Style", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory"],
+                    "cuisine": "Punjabi",
+                    "type": ["Side"]
+                },
+                "ingredients": {
+                    "mandatory": ["Flour", "Yeast", "Salt", "Ghee"],
+                    "negotiable": ["Cilantro"]
+                }
+            }, {
+                "name": "Chana Masala",
+                "image": "67.jpg",
+                "categories": {
+                    "DineType": ["Home Style", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Punjabi",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Chickpeas", "Onion", "Tomato", "Spices"],
+                    "negotiable": ["Cilantro", "Lemon"]
+                }
+            }, {
+                "name": "Makki Di Roti",
+                "image": "68.jpg",
+                "categories": {
+                    "DineType": ["Home Style", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory"],
+                    "cuisine": "Punjabi",
+                    "type": ["Comfort Food", "Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Cornmeal", "Water", "Ghee"],
+                    "negotiable": ["Cilantro", "Green chili"]
+                }
+            }, {
+                "name": "Butter Chicken",
+                "image": "69.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Punjabi",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Chicken", "Tomato", "Butter", "Cream", "Ginger", "Garlic"],
+                    "negotiable": ["Coriander", "Green chili"]
+                }
+            }, {
+                "name": "Rajma",
+                "image": "70.jpg",
+                "categories": {
+                    "DineType": ["Home Style"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Punjabi",
+                    "type": ["Everyday Meal", "Comfort Food"]
+                },
+                "ingredients": {
+                    "mandatory": ["Kidney beans", "Onion", "Tomato", "Spices"],
+                    "negotiable": ["Cilantro", "Green chili"]
+                }
+            }, {
+                "name": "Lassi",
+                "image": "71.jpg",
+                "categories": {
+                    "DineType": ["Home Style", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet"],
+                    "cuisine": "Punjabi",
+                    "type": ["Drink"]
+                },
+                "ingredients": {
+                    "mandatory": ["Yogurt", "Sugar", "Cardamom"],
+                    "negotiable": ["Saffron", "Rose water"]
+                }
+            }, {
+                "name": "Kadhi Pakora",
+                "image": "72.jpg",
+                "categories": {
+                    "DineType": ["Home Style"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Punjabi",
+                    "type": ["Comfort Food"]
+                },
+                "ingredients": {
+                    "mandatory": ["Yogurt", "Gram flour", "Spices", "Onion"],
+                    "negotiable": ["Cilantro", "Chili powder"]
+                }
+            }, {
+                "name": "Rasgulla",
+                "image": "73.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Gourmet Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet"],
+                    "cuisine": "South Indian",
+                    "type": ["Dessert", "Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Milk powder", "Sugar", "Ghee", "Cardamom"],
+                    "negotiable": ["Rose water"]
+                },
+            },
+            //mughali
+            {
+                "name": "Mutton Korma",
+                "image": "74.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Mutton", "Onion", "Yogurt", "Ginger", "Garlic", "Spices"],
+                    "negotiable": ["Almonds", "Cashews", "Cilantro"]
+                }
+            }, {
+                "name": "Shahi Paneer",
+                "image": "75.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory"],
+                    "cuisine": "Mughlai",
+                    "type": ["Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Paneer", "Cream", "Spices", "Onion", "Cashews"],
+                    "negotiable": ["Cilantro", "Ginger"]
+                }
+            }, {
+                "name": "Nihari",
+                "image": "76.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Everyday Meal", "Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Beef", "Onions", "Ginger", "Garlic", "Spices"],
+                    "negotiable": ["Cilantro", "Lemon"]
+                }
+            }, {
+                "name": "Mughlai Paratha",
+                "image": "77.jpg",
+                "categories": {
+                    "DineType": ["Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Lamb", "Flour", "Onion", "Garlic", "Spices"],
+                    "negotiable": ["Cilantro", "Egg"]
+                }
+            }, {
+                "name": "Kebabs",
+                "image": "78.jpg",
+                "categories": {
+                    "DineType": ["Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Starter", "Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Minced meat", "Onion", "Spices", "Coriander"],
+                    "negotiable": ["Lemon", "Cilantro"]
+                }
+            }, {
+                "name": "Mutton Seekh Kebab",
+                "image": "79.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Starter"]
+                },
+                "ingredients": {
+                    "mandatory": ["Mutton", "Ginger", "Garlic", "Spices"],
+                    "negotiable": ["Lemon", "Coriander"]
+                }
+            }, {
+                "name": "Haleem",
+                "image": "80.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Lamb", "Wheat", "Ginger", "Garlic", "Spices"],
+                    "negotiable": ["Cilantro", "Lemon"]
+                }
+            }, {
+                "name": "Biryani",
+                "image": "81.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Mughlai",
+                    "type": ["Comfort Food"]
+                },
+                "ingredients": {
+                    "mandatory": ["Rice", "Mutton/Chicken", "Yogurt", "Onion", "Spices"],
+                    "negotiable": ["Cilantro", "Saffron"]
+                }
+            }, {
+                "name": "Sabudana Khichdi",
+                "image": "82.jpg",
+                "categories": {
+                    "DineType": ["Gourmet Dine"],
+                    "variety": ["Veg", "Vegan"],
+                    "taste": ["Salty"],
+                    "cuisine": "North Indian",
+                    "type": ["Fast Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Milk powder", "Sugar", "Ghee", "Cardamom"],
+                    "negotiable": ["Rose water"]
+                }
+            }, {
+                "name": "Shahi Tukda",
+                "image": "83.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Gourmet Dine", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet"],
+                    "cuisine": "Mughlai",
+                    "type": ["Dessert", "Festival Special"]
+                },
+                "ingredients": {
+                    "mandatory": ["Bread", "Sugar", "Milk", "Ghee", "Cardamom"],
+                    "negotiable": ["Pistachios", "Almonds"]
+                }
+            },
+            // indo-chinese
+            {
+                "name": "Chili Paneer",
+                "image": "84.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Paneer", "Capsicum", "Onion", "Soy sauce", "Chili sauce"],
+                    "negotiable": ["Garlic", "Ginger", "Coriander"]
+                }
+            }, {
+                "name": "Manchurian",
+                "image": "85.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Cauliflower", "Soy sauce", "Garlic", "Chili sauce", "Cornflour"],
+                    "negotiable": ["Spring onions", "Ginger"]
+                }
+            }, {
+                "name": "Hakka Noodles",
+                "image": "86.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Snack"]
+                },
+                "ingredients": {
+                    "mandatory": ["Noodles", "Carrot", "Cabbage", "Soy sauce", "Vinegar"],
+                    "negotiable": ["Spring onions", "Chili sauce"]
+                }
+            }, {
+                "name": "Sweet and Sour Vegetables",
+                "image": "87.jpg",
+                "categories": {
+                    "DineType": ["Fine Dine", "Street Dine"],
+                    "variety": "Veg",
+                    "taste": ["Sweet", "Sour"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Side Dish"]
+                },
+                "ingredients": {
+                    "mandatory": ["Capsicum", "Pineapple", "Soy sauce", "Vinegar", "Sugar"],
+                    "negotiable": ["Chili sauce", "Ginger"]
+                }
+            }, {
+                "name": "Veg Fried Rice",
+                "image": "88.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Comfort Food"]
+                },
+                "ingredients": {
+                    "mandatory": ["Rice", "Carrot", "Peas", "Soy sauce", "Spring onions"],
+                    "negotiable": ["Chili sauce", "Ginger"]
+                }
+            }, {
+                "name": "Spring Rolls",
+                "image": "89.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Starter", "Snack"]
+                },
+                "ingredients": {
+                    "mandatory": ["Spring roll wrappers", "Cabbage", "Carrot", "Soy sauce"],
+                    "negotiable": ["Ginger", "Garlic"]
+                }
+            }, {
+                "name": "Chili Garlic Noodles",
+                "image": "90.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Snack"]
+                },
+                "ingredients": {
+                    "mandatory": ["Noodles", "Garlic", "Soy sauce", "Chili sauce", "Spring onions"],
+                    "negotiable": ["Ginger", "Capsicum"]
+                }
+            }, {
+                "name": "Schezwan Fried Rice",
+                "image": "91.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Comfort Food"]
+                },
+                "ingredients": {
+                    "mandatory": ["Rice", "Schezwan sauce", "Carrot", "Peas", "Spring onions"],
+                    "negotiable": ["Ginger", "Capsicum"]
+                }
+            }, {
+                "name": "Chili Fish",
+                "image": "92.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Non-Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Everyday Meal"]
+                },
+                "ingredients": {
+                    "mandatory": ["Fish", "Soy sauce", "Chili sauce", "Garlic", "Onion"],
+                    "negotiable": ["Spring onions", "Capsicum"]
+                }
+            }, {
+                "name": "Gobi Manchurian",
+                "image": "9.jpg",
+                "categories": {
+                    "DineType": ["Street Dine", "Fine Dine"],
+                    "variety": "Veg",
+                    "taste": ["Savory", "Spicy"],
+                    "cuisine": "Indo-Chinese",
+                    "type": ["Comfort Food"]
+                },
+                "ingredients": {
+                    "mandatory": ["Cauliflower", "Soy sauce", "Chili sauce", "Garlic", "Onion"],
+                    "negotiable": ["Coriander", "Spring onions"]
+                }
+            },
+
+        ];
+        const filters = ["DineType", "meal", "taste", "cuisine", "type", "variety"];
+        const filterValues = {};
+
+        // Create filter UI
+        const filterDiv = d3.select("#filters");
+        filters.forEach(filter => {
+            const group = filterDiv.append("div").attr("class", "filter-group");
+            const title = group.append("div")
+                .attr("class", "filter-title")
+                .html(`${filter.charAt(0).toUpperCase() + filter.slice(1)} <span>▶</span>`)
+                .on("click", function() {
+                    const options = group.select(".filter-options");
+                    const isVisible = options.style("display") === "block";
+                    options.style("display", isVisible ? "none" : "block");
+                    d3.select(this).select("span").style("transform", isVisible ? "rotate(0deg)" : "rotate(90deg)");
+                });
+
+            const optionsDiv = group.append("div").attr("class", "filter-options");
+            const values = [...new Set(data.flatMap(d => d.categories[filter] || []))];
+            values.forEach(value => {
+                optionsDiv.append("div")
+                    .attr("class", "filter-tile")
+                    .text(value)
+                    .on("click", function() {
+                        d3.select(this.parentNode).selectAll(".filter-tile").classed("selected", false);
+                        d3.select(this).classed("selected", true);
+                        filterValues[filter] = value;
+                        updateResults();
+                    });
+            });
+        });
+
+        // Update results based on filters
+        function updateResults() {
+            const filtered = data.filter(d => {
+                return filters.every(f => !filterValues[f] || (Array.isArray(d.categories[f]) ?
+                    d.categories[f].includes(filterValues[f]) :
+                    d.categories[f] === filterValues[f]));
+            });
+
+            const resultsDiv = d3.select("#results").html("");
+            if (filtered.length === 0) {
+                resultsDiv.append("p").text("No food items match your criteria.").style("text-align", "center");
+            } else {
+                const tiles = resultsDiv.selectAll(".food-item").data(filtered);
+
+                tiles.enter()
+                    .append("div")
+                    .attr("class", "food-item")
+                    .html(d => `
+                        <img src="${d.image}" alt="${d.name}">
+                        <p>${d.name}</p>
+                    `)
+                    .on("click", (event, d) => showCustomization(d))
+                    .merge(tiles)
+                    .html(d => `
+                        <img src="${d.image}" alt="${d.name}">
+                        <p>${d.name}</p>
+                    `)
+                    .on("click", (event, d) => showCustomization(d));
+
+                tiles.exit().remove();
+            }
+        }
+
+        // Show customization options
+        function showCustomization(item) {
+            const customizationDiv = d3.select("#customization").html("");
+            customizationDiv.append("h3").text(`Customize: ${item.name}`);
+            customizationDiv.append("p").text("Mandatory: " + item.ingredients.mandatory.join(", "));
+            const negotiableDiv = customizationDiv.append("div");
+            negotiableDiv.append("p").text("Negotiable:");
+            item.ingredients.negotiable.forEach(ing => {
+                const checkbox = negotiableDiv.append("label");
+                checkbox.append("input")
+                    .attr("type", "checkbox")
+                    .attr("value", ing)
+                    .property("checked", true);
+                checkbox.append("span").text(ing);
+                negotiableDiv.append("br");
+            });
+
+            customizationDiv.append("button").text("Finalize Customizations").on("click", () => {
+                        const details = customizations.map(cust =>
+                                `${cust.name} without ${cust.excluded.join(", ")}${cust.additionalRequests ? ` (Additional Requests: ${cust.additionalRequests})` : ''}`
+        ).join("\n");
+                const subject = encodeURIComponent("Customized Orders");
+                const body = encodeURIComponent(`Customizations:\n${details}`);
+
+                // Open Gmail compose window with pre-filled subject and body
+                const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=sakanchha47@gmail.com&su=${subject}&body=${body}`;
+                window.open(gmailComposeUrl, "_blank");
+            });
+        
+        }
+
+// Handle Finalize Customization Button
+document.getElementById("customizeMore").addEventListener("click", function () {
+    const selectedIngredients = Array.from(document.querySelectorAll(".filter-tile.selected"))
+        .map(tile => tile.textContent.trim());
+    const notes = document.querySelector(".styled-textbox")?.value || "No additional notes.";
+
+    const customizedItem = {
+        name: "Customized Dish",
+        price: selectedIngredients.length * 50, // Example pricing logic
+        customizations: {
+            ingredients: selectedIngredients,
+            notes: notes
+        }
+    };
+});
+
+        updateResults();
+
+        function toggleMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>
