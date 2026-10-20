@@ -20,10 +20,11 @@ window.EPICURIA_CONFIG = {
 
   restaurant: {
     // TODO before launch: replace with the real restaurant details.
-    phone: "+91 98765 43210",
+    // Call links dial a real number once this contains 7+ digits.
+    phone: "+91 xxxxxxxxxx",
     email: "sakanchha47@gmail.com",
-    address: "Marine Drive, Churchgate, Mumbai 400020",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Marine+Drive+Churchgate+Mumbai",
+    address: "123 xyz street",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=123+xyz+street",
     hours: "12:00 PM – 11:00 PM",
     hoursShort: "Open daily · 12–11 PM",
     lastKitchenOrder: "22:30"

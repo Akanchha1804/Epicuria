@@ -67,7 +67,7 @@ The root `index.html`, `.nojekyll`, `404.html`, `robots.txt` and `sitemap.xml` a
 
 All owner-editable values live in **`assets/js/config.js`**.
 
-1. **Restaurant details** — replace the placeholder phone number, email and address (`restaurant.phone`, `restaurant.email`, `restaurant.address`, `restaurant.mapUrl`). The current number is a placeholder.
+1. **Restaurant details** - replace the placeholder phone number and address (`restaurant.phone`, `restaurant.address`, `restaurant.mapUrl`). The current phone (`+91 xxxxxxxxxx`) has no digits, so call buttons stay visible but do not dial; entering a real number with 7+ digits turns them into working `tel:` links.
 2. **Social links** — fill `socials.instagram` / `facebook` / `x`. Empty entries are hidden automatically.
 3. **Order + reservation destination**
    - Set `ordering.endpoint` and `reservation.endpoint` to a form endpoint (e.g. a Formspree form URL) to receive submissions in an inbox/dashboard.

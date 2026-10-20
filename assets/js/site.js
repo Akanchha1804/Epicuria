@@ -178,7 +178,10 @@
     document.querySelectorAll("[data-config-link]").forEach(function (node) {
       var type = node.getAttribute("data-config-link");
       if (type === "phone" && restaurant.phone) {
-        node.href = "tel:" + restaurant.phone.replace(/[^+\d]/g, "");
+        var dial = restaurant.phone.replace(/\D/g, "");
+        // Keep looking like the displayed number when it is still a placeholder;
+        // never collapse "+91 xxxxxxxxxx" down to a misleading "tel:+91".
+        node.href = "tel:" + (dial.length >= 7 ? dial : restaurant.phone.replace(/\s/g, ""));
       } else if (type === "email" && restaurant.email) {
         node.href = "mailto:" + restaurant.email;
       } else if (type === "map" && restaurant.mapUrl) {
