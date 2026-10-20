@@ -281,6 +281,7 @@
       address: {
         "@type": "PostalAddress",
         streetAddress: restaurant.address,
+        addressLocality: "Agra",
         addressCountry: "IN"
       },
       openingHoursSpecification: {

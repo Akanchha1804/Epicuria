@@ -23,8 +23,8 @@ window.EPICURIA_CONFIG = {
     // Call links dial a real number once this contains 7+ digits.
     phone: "+91 xxxxxxxxxx",
     email: "sakanchha47@gmail.com",
-    address: "123 xyz street",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=123+xyz+street",
+    address: "123 xyz street, Agra",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=123+xyz+street+Agra",
     hours: "12:00 PM – 11:00 PM",
     hoursShort: "Open daily · 12–11 PM",
     lastKitchenOrder: "22:30"
