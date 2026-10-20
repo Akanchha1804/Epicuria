@@ -26,8 +26,7 @@ window.EPICURIA_CONFIG = {
     address: "123 xyz street, Agra",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=123+xyz+street+Agra",
     hours: "12:00 PM – 11:00 PM",
-    hoursShort: "Open daily · 12–11 PM",
-    lastKitchenOrder: "22:30"
+    hoursShort: "Open daily · 12–11 PM"
   },
 
   currency: {
