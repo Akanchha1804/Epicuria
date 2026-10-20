@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /Epicuria/cart.html
+Disallow: /Epicuria/checkout.html
+
+Sitemap: https://akanchha1804.github.io/Epicuria/sitemap.xml

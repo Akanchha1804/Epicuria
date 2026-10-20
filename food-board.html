@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taste Board — Epicuria</title>
+  <meta name="description" content="Build a plate that fits you. Filter Epicuria's menu by cuisine, diet, taste, meal and dining style, then remove ingredients and add your customised dish to the cart.">
+  <link rel="canonical" href="https://akanchha1804.github.io/Epicuria/food-board.html">
+  <meta name="theme-color" content="#0c0b0a">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Epicuria">
+  <meta property="og:title" content="Taste Board — Epicuria">
+  <meta property="og:description" content="Filter by diet, cuisine, taste and meal — then remove ingredients before adding to your cart.">
+  <meta property="og:url" content="https://akanchha1804.github.io/Epicuria/food-board.html">
+  <meta property="og:image" content="https://akanchha1804.github.io/Epicuria/assets/img/brand/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/brand/icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="announcement">
+    <div class="container">
+      <span data-config="hoursShort">Open daily · 12–11 PM</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="hide-sm">Reservations recommended</span>
+      <span class="dot hide-sm" aria-hidden="true"></span>
+      <a href="tel:+919876543210" data-config-link="phone" data-config="phone">+91 98765 43210</a>
+    </div>
+  </div>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Epicuria home">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span class="brand-name">Epicuria<small>Divine · Luxurious · Cosy</small></span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="food-board.html" aria-current="page">Taste Board</a>
+        <a href="occasions.html">Occasions</a>
+        <a href="reservation.html">Reservations</a>
+      </nav>
+      <div class="header-actions">
+        <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart, empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 8h12l-1 11H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span class="cart-count" data-cart-count hidden>0</span>
+        </a>
+        <a class="btn btn--gold btn--sm header-cta" href="reservation.html">Book a table</a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="nav-backdrop" data-nav-backdrop></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <img class="page-hero__bg" src="assets/img/menu/59.webp" alt="" width="720" height="720">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><span aria-hidden="true">/</span><span>Taste Board</span>
+        </nav>
+        <h1>Your plate, your rules.</h1>
+        <p>Filter the kitchen by craving, diet or occasion, then open any dish to leave ingredients out and add a note for the chef. Customisations are sent with your order and confirmed by the kitchen.</p>
+      </div>
+    </section>
+
+    <section class="section section--tight">
+      <div class="container">
+        <div class="board-layout">
+          <aside class="filter-panel" aria-label="Taste board filters">
+            <h2>Refine the board</h2>
+            <p class="filter-panel__sub">Pick one option per group. Tap again to clear it.</p>
+            <div data-board-filters></div>
+            <div class="filter-panel__actions">
+              <button class="btn btn--outline btn--block" type="button" data-board-clear>Clear all filters</button>
+            </div>
+          </aside>
+
+          <div class="board-results">
+            <div class="board-toolbar">
+              <div class="search-field">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="search" placeholder="Search an ingredient or dish…" aria-label="Search the taste board" data-board-search autocomplete="off">
+              </div>
+              <p class="board-count" data-board-count aria-live="polite"></p>
+            </div>
+
+            <div class="board-grid" data-board-grid></div>
+
+            <div class="load-more-wrap">
+              <button class="btn btn--outline" type="button" data-board-load-more>Show more dishes</button>
+            </div>
+
+            <div class="cart-assist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>
+              <p style="margin:0">Removing an ingredient is a request, not a guarantee. For severe allergies, please call the restaurant before ordering. Our kitchen handles nuts, dairy, gluten and shellfish.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="dialog" id="customize-dialog" aria-labelledby="customize-title">
+    <div class="dialog__head">
+      <div>
+        <h2 id="customize-title" data-dialog-title>Customise</h2>
+        <p data-dialog-meta></p>
+      </div>
+      <button class="dialog__close" type="button" data-dialog-close aria-label="Close customisation dialog">×</button>
+    </div>
+    <div class="dialog__body">
+      <div class="dialog__dish">
+        <img data-dialog-image alt="" width="720" height="720">
+        <div>
+          <p data-dialog-desc></p>
+          <p class="small" data-dialog-mandatory></p>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Ingredients</legend>
+        <p class="field__hint" style="margin-top:0">Uncheck anything you would like us to leave out.</p>
+        <div class="ingredient-list" data-dialog-negotiable></div>
+      </fieldset>
+
+      <div class="field">
+        <label for="custom-note">Notes for the kitchen</label>
+        <textarea id="custom-note" data-dialog-note maxlength="300" placeholder="Allergies, spice level, extra sauce…"></textarea>
+        <span class="field__hint">Please mention severe allergies directly to our team as well.</span>
+      </div>
+
+      <div class="dialog__actions">
+        <div class="dialog__total">
+          <span>Dish price</span>
+          <strong class="price" data-dialog-price>₹0</strong>
+        </div>
+        <button class="btn btn--gold" type="button" data-dialog-add>Add to cart</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html" aria-label="Epicuria home">
+          <span class="brand-mark" aria-hidden="true">E</span>
+          <span class="brand-name">Epicuria<small>Divine · Luxurious · Cosy</small></span>
+        </a>
+        <p>A modern dining room where Indian soul food meets a world kitchen — plated with care, served with warmth.</p>
+        <div class="socials" data-socials aria-label="Social media"></div>
+      </div>
+      <div class="footer-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="food-board.html">Taste Board</a></li>
+          <li><a href="occasions.html">Occasions</a></li>
+          <li><a href="reservation.html">Reservations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Visit</h3>
+        <ul class="footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Marine+Drive+Churchgate+Mumbai" data-config-link="map"><span data-config="address">Marine Drive, Churchgate, Mumbai 400020</span></a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span data-config="hours">12:00 PM – 11:00 PM</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+            <a href="tel:+919876543210" data-config-link="phone" data-config="phone">+91 98765 43210</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+            <a href="mailto:sakanchha47@gmail.com" data-config-link="email" data-config="email">sakanchha47@gmail.com</a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Order &amp; book</h3>
+        <ul>
+          <li><a href="menu.html">Order for pickup</a></li>
+          <li><a href="cart.html">Your cart</a></li>
+          <li><a href="reservation.html">Reserve a table</a></li>
+          <li><a href="food-board.html">Dietary preferences</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© <span data-year>2026</span> Epicuria. All rights reserved.</p>
+      <p>Prices in INR · Please tell us about allergies.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/config.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+  <script src="assets/js/cart.js" defer></script>
+  <script src="assets/js/menu-ui.js" defer></script>
+  <script src="assets/js/menu-data.js" defer></script>
+  <script src="assets/js/food-board.js" defer></script>
+</body>
+</html>

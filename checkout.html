@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout — Epicuria</title>
+  <meta name="description" content="Send your Epicuria pickup or dine-in pre-order to the restaurant.">
+  <link rel="canonical" href="https://akanchha1804.github.io/Epicuria/checkout.html">
+  <meta name="theme-color" content="#0c0b0a">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="assets/img/brand/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/brand/icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="announcement">
+    <div class="container">
+      <span data-config="hoursShort">Open daily · 12–11 PM</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="hide-sm">Reservations recommended</span>
+      <span class="dot hide-sm" aria-hidden="true"></span>
+      <a href="tel:+919876543210" data-config-link="phone" data-config="phone">+91 98765 43210</a>
+    </div>
+  </div>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Epicuria home">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span class="brand-name">Epicuria<small>Divine · Luxurious · Cosy</small></span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="food-board.html">Taste Board</a>
+        <a href="occasions.html">Occasions</a>
+        <a href="reservation.html">Reservations</a>
+      </nav>
+      <div class="header-actions">
+        <a class="cart-link" href="cart.html" data-cart-link aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 8h12l-1 11H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span class="cart-count" data-cart-count hidden>0</span>
+        </a>
+        <a class="btn btn--gold btn--sm header-cta" href="reservation.html">Book a table</a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="nav-backdrop" data-nav-backdrop></div>
+
+  <main id="main">
+    <section class="page-hero" style="min-height:320px">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><span aria-hidden="true">/</span><a href="cart.html">Cart</a><span aria-hidden="true">/</span><span>Checkout</span>
+        </nav>
+        <h1>Checkout</h1>
+        <p>Send your order request to the kitchen. Nothing is charged online — you pay at the restaurant when you collect or dine in.</p>
+      </div>
+    </section>
+
+    <section class="section section--tight">
+      <div class="container">
+        <div data-checkout-empty hidden>
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 8h12l-1 11H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <h3>There is nothing to check out</h3>
+            <p>Add a few dishes first, then come back to send your order.</p>
+            <a class="btn btn--gold" href="menu.html" style="margin-top:0.5rem">Browse the menu</a>
+          </div>
+        </div>
+
+        <div data-checkout-content hidden>
+          <div class="form-layout">
+            <form class="form-card" data-checkout-form novalidate>
+              <h2>Order details</h2>
+              <p class="form-card__intro">We will confirm your order by email or phone before the kitchen begins.</p>
+
+              <fieldset>
+                <legend>Contact</legend>
+                <div class="form-grid">
+                  <div class="field field--full">
+                    <label for="checkout-name">Full name <span class="req" aria-hidden="true">*</span></label>
+                    <input id="checkout-name" name="name" type="text" autocomplete="name" required placeholder="Who is the order for?">
+                    <span class="field__error" role="alert"></span>
+                  </div>
+                  <div class="field">
+                    <label for="checkout-phone">Phone <span class="req" aria-hidden="true">*</span></label>
+                    <input id="checkout-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+91 98765 43210">
+                    <span class="field__error" role="alert"></span>
+                  </div>
+                  <div class="field">
+                    <label for="checkout-email">Email <span class="req" aria-hidden="true">*</span></label>
+                    <input id="checkout-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+                    <span class="field__error" role="alert"></span>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Collection</legend>
+                <div class="option-grid" style="margin-bottom:1rem">
+                  <label class="option-card">
+                    <input type="radio" name="fulfilment" value="Pickup" checked>
+                    <span>
+                      <strong>Pickup</strong>
+                      <span>Collect from the restaurant</span>
+                    </span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="fulfilment" value="Dine-in">
+                    <span>
+                      <strong>Dine-in pre-order</strong>
+                      <span>Have it ready at your table</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="checkout-date">Date <span class="req" aria-hidden="true">*</span></label>
+                    <input id="checkout-date" name="date" type="date" required>
+                    <span class="field__error" role="alert"></span>
+                  </div>
+                  <div class="field">
+                    <label for="checkout-time">Time <span class="req" aria-hidden="true">*</span></label>
+                    <input id="checkout-time" name="time" type="time" required>
+                    <span class="field__hint">Orders need at least 30 minutes. Last order 10:30 PM.</span>
+                    <span class="field__error" role="alert"></span>
+                  </div>
+                </div>
+                <p class="field__hint" style="margin-top:0.6rem">For a large order or a specific collection time, call <a href="tel:+919876543210" data-config-link="phone" data-config="phone">+91 98765 43210</a> and we will arrange it.</p>
+              </fieldset>
+
+              <fieldset>
+                <legend>Notes</legend>
+                <div class="field">
+                  <label for="checkout-notes">Anything the kitchen should know?</label>
+                  <textarea id="checkout-notes" name="notes" maxlength="500" placeholder="Allergies, spice level, celebration, pickup instructions…"></textarea>
+                  <span class="field__hint">For severe allergies, please also call us. Our kitchen handles nuts, dairy, gluten and shellfish.</span>
+                </div>
+              </fieldset>
+
+              <div class="form-actions">
+                <button class="btn btn--gold" type="submit">Send order request</button>
+                <a class="btn btn--ghost" href="cart.html">Back to cart</a>
+              </div>
+
+              <div class="form-status" data-form-status role="status"></div>
+            </form>
+
+            <aside class="summary-card" aria-labelledby="checkout-summary-title">
+              <h2 id="checkout-summary-title">Your order</h2>
+              <p class="summary-row" style="margin-top:-0.5rem"><span data-order-count>0</span> <strong>items</strong></p>
+              <div class="order-summary-list" data-order-items></div>
+              <div class="summary-row summary-row--total">
+                <span>Subtotal</span>
+                <strong data-order-subtotal>₹0</strong>
+              </div>
+              <p class="summary-note">Taxes, if applicable, are added to the final bill. Payment is at the restaurant. Your cart stays on this device until you clear it.</p>
+              <a class="btn btn--ghost btn--block" href="cart.html">Edit cart</a>
+            </aside>
+          </div>
+        </div>
+
+        <div data-checkout-success hidden></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html" aria-label="Epicuria home">
+          <span class="brand-mark" aria-hidden="true">E</span>
+          <span class="brand-name">Epicuria<small>Divine · Luxurious · Cosy</small></span>
+        </a>
+        <p>A modern dining room where Indian soul food meets a world kitchen — plated with care, served with warmth.</p>
+        <div class="socials" data-socials aria-label="Social media"></div>
+      </div>
+      <div class="footer-col">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="food-board.html">Taste Board</a></li>
+          <li><a href="occasions.html">Occasions</a></li>
+          <li><a href="reservation.html">Reservations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Visit</h3>
+        <ul class="footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Marine+Drive+Churchgate+Mumbai" data-config-link="map"><span data-config="address">Marine Drive, Churchgate, Mumbai 400020</span></a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span data-config="hours">12:00 PM – 11:00 PM</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+            <a href="tel:+919876543210" data-config-link="phone" data-config="phone">+91 98765 43210</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+            <a href="mailto:sakanchha47@gmail.com" data-config-link="email" data-config="email">sakanchha47@gmail.com</a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Order &amp; book</h3>
+        <ul>
+          <li><a href="menu.html">Order for pickup</a></li>
+          <li><a href="cart.html">Your cart</a></li>
+          <li><a href="reservation.html">Reserve a table</a></li>
+          <li><a href="food-board.html">Dietary preferences</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© <span data-year>2026</span> Epicuria. All rights reserved.</p>
+      <p>Prices in INR · Please tell us about allergies.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/config.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+  <script src="assets/js/cart.js" defer></script>
+  <script src="assets/js/form-utils.js" defer></script>
+  <script src="assets/js/checkout.js" defer></script>
+</body>
+</html>
