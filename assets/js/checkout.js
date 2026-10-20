@@ -92,7 +92,9 @@
       var openMinutes = openParts[0] * 60 + (openParts[1] || 0);
       var closeMinutes = closeParts[0] * 60 + (closeParts[1] || 0);
       var lead = Number(ordering.earliestPickupMinutes) || 30;
-      var target = new Date(now.getTime() + lead * 60000);
+      // Leave a little extra room so the suggested slot stays valid while the
+      // customer fills in their details.
+      var target = new Date(now.getTime() + (lead + 10) * 60000);
 
       // Round up to the next five-minute slot so the suggested time is always
       // comfortably past the minimum lead time, even seconds after opening.
@@ -159,7 +161,10 @@
       var today = new Date();
       today.setHours(0, 0, 0, 0);
       var chosenDay = window.FormUtils.combine(date.value, "00:00");
-      var earliest = new Date(Date.now() + (Number(ordering.earliestPickupMinutes) || 30) * 60000);
+      var lead = Number(ordering.earliestPickupMinutes) || 30;
+      var nowMinute = new Date();
+      nowMinute.setSeconds(0, 0);
+      var earliest = new Date(nowMinute.getTime() + lead * 60000);
 
       if (!chosen) {
         window.FormUtils.setError(time, "That date and time is not valid.");
